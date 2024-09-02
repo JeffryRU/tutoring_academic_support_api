@@ -1,41 +1,39 @@
 package com.upao.tutoring_academic_support_api.domain;
 
-import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "students")
 public class Student extends User {
 
-    private String nivelEducativo;
+    private String interests;
+    private String learningPreferences;
 
-    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Session> sesiones = new ArrayList<>();
+    // Constructores, getters y setters
 
-    public Student() {
-        super();
+    public Student() {}
+
+    public Student(String username, String password, String email, String interests, String learningPreferences) {
+        super(username, password, email);
+        this.interests = interests;
+        this.learningPreferences = learningPreferences;
     }
 
-    public Student(String nombre, String email, String contrasena, String nivelEducativo) {
-        super(nombre, email, contrasena, Rol.ESTUDIANTE);
-        this.nivelEducativo = nivelEducativo;
+    public String getInterests() {
+        return interests;
     }
 
-    public String getNivelEducativo() {
-        return nivelEducativo;
+    public void setInterests(String interests) {
+        this.interests = interests;
     }
 
-    public void setNivelEducativo(String nivelEducativo) {
-        this.nivelEducativo = nivelEducativo;
+    public String getLearningPreferences() {
+        return learningPreferences;
     }
 
-    public List<Session> getSesiones() {
-        return sesiones;
-    }
-
-    public void setSesiones(List<Session> sesiones) {
-        this.sesiones = sesiones;
+    public void setLearningPreferences(String learningPreferences) {
+        this.learningPreferences = learningPreferences;
     }
 }
+

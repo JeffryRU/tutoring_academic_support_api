@@ -1,53 +1,48 @@
 package com.upao.tutoring_academic_support_api.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-
-import java.util.ArrayList;
+import jakarta.persistence.*;
 import java.util.List;
 
-
 @Entity
+@Table(name = "tutors")
 public class Tutor extends User {
 
-    private String especialidad;
-    private Double tarifa;
+    private String specialization;
+    private double hourlyRate;
+    private String availability;
 
-    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Session> sesiones = new ArrayList<>();
+    // Constructores, getters y setters
 
-    public Tutor() {
-        super();
+    public Tutor() {}
+
+    public Tutor(String username, String password, String email, String specialization, double hourlyRate, String availability) {
+        super(username, password, email);
+        this.specialization = specialization;
+        this.hourlyRate = hourlyRate;
+        this.availability = availability;
     }
 
-    public Tutor(String nombre, String email, String contrasena, String especialidad, Double tarifa) {
-        super(nombre, email, contrasena, Rol.TUTOR);
-        this.especialidad = especialidad;
-        this.tarifa = tarifa;
+    public String getSpecialization() {
+        return specialization;
     }
 
-    public String getEspecialidad() {
-        return especialidad;
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
     }
 
-    public void setEspecialidad(String especialidad) {
-        this.especialidad = especialidad;
+    public double getHourlyRate() {
+        return hourlyRate;
     }
 
-    public Double getTarifa() {
-        return tarifa;
+    public void setHourlyRate(double hourlyRate) {
+        this.hourlyRate = hourlyRate;
     }
 
-    public void setTarifa(Double tarifa) {
-        this.tarifa = tarifa;
+    public String getAvailability() {
+        return availability;
     }
 
-    public List<Session> getSesiones() {
-        return sesiones;
-    }
-
-    public void setSesiones(List<Session> sesiones) {
-        this.sesiones = sesiones;
+    public void setAvailability(String availability) {
+        this.availability = availability;
     }
 }

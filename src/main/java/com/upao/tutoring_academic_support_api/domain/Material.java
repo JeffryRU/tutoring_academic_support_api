@@ -1,18 +1,17 @@
 package com.upao.tutoring_academic_support_api.domain;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "sessions")
-public class Session {
+@Table(name = "materials")
+public class Material {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime date;
-    private String type;  // Puede ser 'individual' o 'group'
+    private String type;  // Puede ser 'documento', 'video', etc.
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "tutor_id")
@@ -20,11 +19,11 @@ public class Session {
 
     // Constructores, getters y setters
 
-    public Session() {}
+    public Material() {}
 
-    public Session(LocalDateTime date, String type, Tutor tutor) {
-        this.date = date;
+    public Material(String type, String url, Tutor tutor) {
         this.type = type;
+        this.url = url;
         this.tutor = tutor;
     }
 
@@ -36,20 +35,20 @@ public class Session {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Tutor getTutor() {

@@ -1,66 +1,41 @@
 package com.upao.tutoring_academic_support_api.controller;
 
 import com.upao.tutoring_academic_support_api.domain.Tutor;
-import com.upao.tutoring_academic_support_api.domain.Session;
+import com.upao.tutoring_academic_support_api.service.TutorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/tutores")
+@RequestMapping("/api/tutors")
 public class TutorController {
 
-    private List<Tutor> tutores = new ArrayList<>(); // Lista simulada
+    @Autowired
+    private TutorService tutorService;
 
     @GetMapping
-    public List<Tutor> getAllTutores() {
-        return tutores;
+    public List<Tutor> getAllTutors() {
+        return tutorService.getAllTutors();
     }
 
     @GetMapping("/{id}")
-    public Tutor getTutorById(@PathVariable Long id) {
-        return tutores.stream()
-                .filter(tutor -> tutor.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+    public ResponseEntity<Tutor> getTutorById(@PathVariable Long id) {
+        Optional<Tutor> tutor = tutorService.getTutorById(id);
+        return tutor.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Tutor createTutor(@RequestBody Tutor tutor) {
-        tutores.add(tutor);
-        return tutor;
-    }
-
-    @PutMapping("/{id}")
-    public Tutor updateTutor(@PathVariable Long id, @RequestBody Tutor tutorDetalles) {
-        Tutor tutor = getTutorById(id);
-        if (tutor != null) {
-            tutor.setNombre(tutorDetalles.getNombre());
-            tutor.setEspecialidad(tutorDetalles.getEspecialidad());
-            tutor.setTarifa(tutorDetalles.getTarifa());
-        }
-        return tutor;
+        return tutorService.createTutor(tutor);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTutor(@PathVariable Long id) {
-        Tutor tutor = getTutorById(id);
-        if (tutor != null) {
-            tutores.remove(tutor);
-            return "Tutor eliminado";
-        }
-        return "Tutor no encontrado";
-    }
-
-    // Reservar sesión
-    @PostMapping("/{id}/reservar")
-    public String reservarSesion(@PathVariable Long id, @RequestBody Session session) {
-        Tutor tutor = getTutorById(id);
-        if (tutor != null) {
-            tutor.getSesiones().add(session);
-            return "Sesión reservada con éxito";
-        }
-        return "Tutor no encontrado";
+    public ResponseEntity<Void> deleteTutor(@PathVariable Long id) {
+        tutorService.deleteTutor(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
