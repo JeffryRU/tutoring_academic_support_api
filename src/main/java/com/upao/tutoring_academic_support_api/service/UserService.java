@@ -23,6 +23,16 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        // Validar si el username ya existe
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new RuntimeException("Username already exists.");
+        }
+
+        // Validar si el email ya existe
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists.");
+        }
+
         return userRepository.save(user);
     }
 
